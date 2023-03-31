@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Hi friend!</title>
+	<style>
+		body {
+			background-color: #333;
+			color: #fff;
+			text-align: center;
+		}
+		h1 {
+			font-size: 48px;
+			margin-top: 50px;
+		}
+		#game {
+			width: 400px;
+			height: 400px;
+			margin: 0 auto;
+			background-color: #fff;
+			position: relative;
+			border-radius: 10px;
+			overflow: hidden;
+		}
+		#target {
+			width: 50px;
+			height: 50px;
+			background-color: #f00;
+			position: absolute;
+			top: 0;
+			left: 0;
+			border-radius: 50%;
+			cursor: pointer;
+			transition: all 0.2s ease-in-out;
+		}
+		#score {
+			font-size: 24px;
+			margin-top: 20px;
+		}
+	</style>
+</head>
+<body>
+	<h1>Hi friend!</h1>
+	<p>Click the red target as many times as you can in 10 seconds:</p>
+	<div id="game">
+		<div id="target"></div>
+	</div>
+	<div id="score">Score: <span id="score-value">0</span></div>
+	<script>
+		let score = 0;
+		const target = document.getElementById('target');
+		const scoreValue = document.getElementById('score-value');
+		const game = document.getElementById('game');
+		const duration = 10;
+		let remainingTime = duration;
+		let timerInterval;
+
+		function moveTarget() {
+			const x = Math.random() * (game.offsetWidth - target.offsetWidth);
+			const y = Math.random() * (game.offsetHeight - target.offsetHeight);
+			target.style.left = x + 'px';
+			target.style.top = y + 'px';
+		}
+
+		function startGame() {
+			score = 0;
+			remainingTime = duration;
+			scoreValue.innerHTML = score;
+			target.addEventListener('click', incrementScore);
+			timerInterval = setInterval(() => {
+				remainingTime--;
+				if (remainingTime === 0) {
+					endGame();
+				}
+			}, 1000);
+			moveTarget();
+		}
+
+		function endGame() {
+			target.removeEventListener('click', incrementScore);
+			clearInterval(timerInterval);
+			alert(`Time's up! Your final score is ${score}.`);
+		}
+
+		function incrementScore() {
+			score++;
+			scoreValue.innerHTML = score;
+			moveTarget();
+		}
+
+		startGame();
+	</script>
+</body>
+</html>
